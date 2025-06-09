@@ -1,33 +1,15 @@
 package com.example.mockuptest2
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LaunchDisplayFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LaunchDisplayFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +19,28 @@ class LaunchDisplayFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_launch_display, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LaunchDisplayFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LaunchDisplayFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private lateinit var rocketImage: ImageView
+    private lateinit var launchText: TextView
+    private lateinit var rocketAnim: AnimationDrawable
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        rocketImage = view.findViewById(R.id.rocketImage)
+        launchText = view.findViewById(R.id.launchText)
+
+        rocketImage.setBackgroundResource(R.drawable.rocket_animation)
+        (rocketImage.background as? AnimationDrawable)?.let { anim ->
+            rocketAnim = anim
+        }
     }
+
+    fun updateDisplay(thrust: Int, name: String) {
+        rocketAnim.start()
+        launchText.text = "Launching $name at thrust level $thrust!"
+        // Scale text size between 12sp and 24sp based on thrust (0-100)
+        val minSize = 12f
+        val maxSize = 24f
+        val scale = (thrust / 100f).coerceIn(0f, 1f)
+        launchText.textSize = minSize + (maxSize - minSize) * scale
+    }
+
 }

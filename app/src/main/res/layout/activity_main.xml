@@ -19,7 +19,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentDisplay"
-        android:name="com.example.mockuptest2.LaunchControlFragment"
+        android:name="com.example.mockuptest2.LaunchDisplayFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/fragmentControl"
